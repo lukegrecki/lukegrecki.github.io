@@ -32,16 +32,37 @@ main {
 }
 
 h1 {
-  color: var(--emph);
+  color: #b58900;
   font-size: 1.25rem;
   font-weight: normal;
   margin-bottom: 2rem;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  box-sizing: content-box;
+  border-right: 0.6em solid #b58900;
+  animation:
+    h1-typing 0.8s steps(11) 0.2s forwards,
+    h1-cursor 0.6s step-end 5,
+    h1-cursor-hide 0s 3.2s forwards;
+}
+
+@keyframes h1-typing {
+  to { width: 11ch; }
+}
+
+@keyframes h1-cursor {
+  50% { border-color: transparent; }
+}
+
+@keyframes h1-cursor-hide {
+  to { border-color: transparent; }
 }
 
 
 h2 {
-  color: var(--emph);
-  font-size: 0.85rem;
+  color: #b58900;
+  font-size: 1rem;
   font-weight: normal;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -50,7 +71,7 @@ h2 {
 
 h2::before {
   content: "# ";
-  color: var(--muted);
+  color: #586e75;
 }
 
 p {
@@ -67,14 +88,33 @@ ul li::before {
   color: var(--muted);
 }
 
+ul li:nth-child(1)::before { color: #d33682; }
+ul li:nth-child(2)::before { color: #b58900; }
+ul li:nth-child(3)::before { color: #268bd2; }
+ul li:nth-child(4)::before { color: #cb4b16; }
+ul li:nth-child(5)::before { color: #859900; }
+
 a {
   color: var(--accent);
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  text-decoration: underline;
   color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  animation: underline-fade 0.2s ease forwards;
+}
+
+@keyframes underline-fade {
+  from { text-decoration-color: transparent; }
+  to   { text-decoration-color: currentColor; }
+}
+
+::selection {
+  background: #2aa198;
+  color: #002b36;
 }
 
 .reeds {
