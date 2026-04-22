@@ -9,7 +9,7 @@ I'm a software engineer, writer, and musician based in NYC.
 
 ## Work
 
-I've spent over a decade as a software engineer at small startups in New York City. Recently I took a year away from tech to explore contemplative care through a program at the New York Zen Center.
+I've spent over a decade as a software engineer at small startups in New York City. Recently I took a year away from tech to explore contemplative care through a program at the [New York Zen Center](https://zencare.org).
 
 ## Projects & interests
 
