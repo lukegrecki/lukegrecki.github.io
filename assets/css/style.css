@@ -127,6 +127,8 @@ a:hover {
   object-fit: cover;
   object-position: center 75%;
   margin-bottom: 2rem;
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
 
 .contact {
