@@ -21,7 +21,7 @@ I've spent over a decade as a software engineer at small startups in New York Ci
 
 ## Links
 
-<ul class="contact">
+<ul>
   <li><a href="mailto:lukegrecki@gmail.com">lukegrecki@gmail.com</a></li>
   <li><a href="https://www.linkedin.com/in/lukegrecki/">LinkedIn</a></li>
   <li><a href="https://fieldnotesfromsilence.substack.com">Field Notes from Silence</a></li>
