@@ -94,6 +94,9 @@ ul li:nth-child(3)::before { color: #268bd2; }
 ul li:nth-child(4)::before { color: #cb4b16; }
 ul li:nth-child(5)::before { color: #859900; }
 
+ul li::before { transition: color 0.2s ease; }
+ul li:hover::before { color: #ffffff; }
+
 a {
   color: var(--accent);
   text-decoration: none;
