@@ -3,6 +3,8 @@ layout: default
 title: Luke Grecki
 ---
 
+<img src="/assets/reeds.png" alt="Illustration of reeds" class="reeds">
+
 # Luke Grecki
 
 I'm a software engineer, writer, and musician based in NYC.

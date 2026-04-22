@@ -77,6 +77,15 @@ a:hover {
   color: #ffffff;
 }
 
+.reeds {
+  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  object-position: center 75%;
+  margin-bottom: 2rem;
+}
+
 .contact {
   margin-top: 2rem;
   padding-top: 1.5rem;
