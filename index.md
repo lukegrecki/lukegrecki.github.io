@@ -21,9 +21,9 @@ I've spent over a decade as a software engineer at small startups in New York Ci
 
 ## Links
 
-<div class="contact">
-  <a href="mailto:lukegrecki@gmail.com">lukegrecki@gmail.com</a><br>
-  <a href="https://www.linkedin.com/in/lukegrecki/">LinkedIn</a><br>
-  <a href="https://fieldnotesfromsilence.substack.com">Field Notes from Silence</a><br>
-  <a href="https://open.spotify.com/artist/04tZv4T66tYdaY0AHdC5m4?si=l11u45DjRxaGdsukOhlYzQ">Spotify</a>
-</div>
+<ul class="contact">
+  <li><a href="mailto:lukegrecki@gmail.com">lukegrecki@gmail.com</a></li>
+  <li><a href="https://www.linkedin.com/in/lukegrecki/">LinkedIn</a></li>
+  <li><a href="https://fieldnotesfromsilence.substack.com">Field Notes from Silence</a></li>
+  <li><a href="https://open.spotify.com/artist/04tZv4T66tYdaY0AHdC5m4?si=l11u45DjRxaGdsukOhlYzQ">Spotify</a></li>
+</ul>
