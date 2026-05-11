@@ -15,7 +15,7 @@ I've spent over a decade as a software engineer at small startups in New York Ci
 
 ## Projects & interests
 
-- Writing [Field Notes from Silence](https://fieldnotesfromsilence.substack.com), a Substack on the inner life, published every two weeks.
+- Writing [Field Notes from Silence](https://fieldnotesfromsilence.substack.com), a Substack on the inner life.
 - Meditation practice.
 - Poetry.
 
