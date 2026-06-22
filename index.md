@@ -61,6 +61,10 @@ He sang and sobbed in his deep Russian voice.
 All I have is one cassette tape.</p>
 </figure>
 
+## Music
+
+<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0lWN4fBaZLdF12Mmr2hR18?utm_source=generator&theme=0&si=c5b964752961485f" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
 ## Links
 
 <ul>
