@@ -120,6 +120,33 @@ a:hover {
   color: #002b36;
 }
 
+.poem {
+  margin: 1.25rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--muted);
+  transition: border-color 0.2s ease;
+}
+
+.poem:hover {
+  border-color: var(--accent);
+}
+
+.poem figcaption {
+  color: var(--emph);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.poem p {
+  white-space: pre-line;
+  margin-bottom: 1rem;
+  color: var(--fg);
+}
+
+.poem p:last-child {
+  margin-bottom: 0;
+}
+
 .reeds {
   display: block;
   width: 100%;

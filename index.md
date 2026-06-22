@@ -21,6 +21,46 @@ I've spent over a decade as a software engineer at small startups in New York Ci
 - Modular synthesizers.
 - Tabla.
 
+## Poetry
+
+<figure class="poem">
+  <figcaption>You are no one</figcaption>
+  <p>My eyes dart from yours.
+When we speak our words tumble
+into birds.
+A warmth follows me walking at night alone,
+in foreign countries you have memorized bridges
+and the worn hands of guards.</p>
+  <p>I spoke softly of barbed wire
+and hats, and the torn faces under awnings.
+As I hold your torch
+I hear my cry breathe,
+I find you at the bottom of stairs
+I have fallen down in my sleep.</p>
+  <p>You are standing on the edge of a grave.
+I am the dead.</p>
+  <p>Unseen territory where armies dissolve
+and flags become rags on homeless men.
+I have turned away from voices thick with pain,
+hands that have fried their last egg,
+eyes that wrinkle like stars.</p>
+  <p>You are no one.
+The heat of your silence
+makes me squirm.
+I laugh nervously.
+I am not sure of trees,
+or how my mother will get home.</p>
+  <p>I want to know the last thing you remember
+at night,
+the castles you see behind your eyelids.
+The German shepherd you pet 52 years ago,
+and the thousands of people whose faces
+you have forgotten.</p>
+  <p>My grandfather fed wild animals in the war.
+He sang and sobbed in his deep Russian voice.
+All I have is one cassette tape.</p>
+</figure>
+
 ## Links
 
 <ul>
