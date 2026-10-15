@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" data-time="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luke Grecki</title>
+<meta name="description" content="Luke Grecki — software engineer, musician, and poet.">
+<meta property="og:title" content="Luke Grecki">
+<meta property="og:description" content="Software engineer, musician, and poet.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>(function(){var q=new URLSearchParams(location.search).get('time'),h=new Date().getHours();document.documentElement.setAttribute('data-time',/^(dawn|day|dusk|night)$/.test(q)?q:h>=5&&h<8?'dawn':h>=8&&h<17?'day':h>=17&&h<20?'dusk':'night')})()</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/sky.js" defer></script>
+<script src="assets/js/scene.js" defer></script>
+</head>
+<body>
+<main class="scene" data-scene>
+  <div class="scene__sky" aria-hidden="true">
+    <div class="bands"></div>
+    <div class="scene__orb"></div>
+    <div class="scene__hills"></div>
+  </div>
+  <div class="scene__water" aria-hidden="true">
+    <div class="bands"></div>
+    <div class="scene__refl breathe"></div>
+  </div>
+
+  <p class="scene__readout pixel" aria-hidden="true"></p>
+
+  <header class="scene__id">
+    <h1 class="scene__name">Luke Grecki</h1>
+    <nav aria-label="Main">
+      <ul class="scene__nav pixel">
+        <li><a class="navlink" href="work/">Work</a></li>
+        <li><a class="navlink" href="music/">Music</a></li>
+        <li><a class="navlink" href="writing/">Writing</a></li>
+        <li><a class="navlink" href="about/">About</a></li>
+      </ul>
+    </nav>
+  </header>
+</main>
+</body>
+</html>
