@@ -38,6 +38,8 @@
       var a, b;
       if (ph <= Math.PI) { a = r.h * Math.cos(ph); b = r.h; } else { a = -r.h; b = -r.h * Math.cos(ph); }
       var qa = Math.max(-r.hq, q(a)), qb = Math.min(r.hq, q(b));
+      // Seen from the southern hemisphere the moon is upside down: lit side on the other limb.
+      if (S.south) { var t0 = qa; qa = -qb; qb = -t0; }
       if (qb - qa > 0) {
         orbNodes.push(el('', 'left:' + (R + qa) + 'px;top:' + r.y + 'px;width:' + (qb - qa) + 'px;height:6px;background:' + P.orb));
         cxSum += (qa + qb) / 2; cxN++;
@@ -92,9 +94,7 @@
   }
 
   function updateReadout() {
-    var d = new Date();
-    var clock = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-    readout.textContent = clock + ' · ' + S.season + (S.time === 'night' ? ' · ' + S.phaseName(S.moonAge()) : '');
+    readout.textContent = S.clock() + ' · ' + S.time + ' · ' + S.season + (S.time === 'night' ? ' · ' + S.phaseName(S.moonAge()) : '');
   }
 
   build();

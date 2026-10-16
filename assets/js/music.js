@@ -30,6 +30,12 @@
   if (!list) return;
   var rows = Array.prototype.slice.call(list.querySelectorAll('.track'));
   var current = null;
+  var session = 'mediaSession' in navigator ? navigator.mediaSession : null;
+  // Cover shown on the lock screen and in system media controls.
+  var ARTWORK = [
+    { src: new URL('../assets/icon-512.png', location.href).href, sizes: '512x512', type: 'image/png' },
+    { src: new URL('../assets/icon-192.png', location.href).href, sizes: '192x192', type: 'image/png' }
+  ];
 
   function fmt(sec) {
     if (!isFinite(sec)) return '—';
@@ -45,6 +51,9 @@
     var timeEl = row.querySelector('.track__time');
     var title = row.querySelector('.track__title').textContent.trim();
     var total = row.getAttribute('data-duration') ? Number(row.getAttribute('data-duration')) : NaN;
+    var slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    var playedOnce = false;
+    function track(name, label) { if (window.Analytics) window.Analytics.event(name + '/' + slug, label + ': ' + title); }
 
     function length() { return isFinite(audio.duration) && audio.duration > 0 ? audio.duration : total; }
     function paint() {
@@ -73,17 +82,27 @@
     audio.addEventListener('play', function () {
       row.classList.add('is-playing');
       btn.setAttribute('aria-label', 'Pause ' + title);
-      if ('mediaSession' in navigator && window.MediaMetadata) {
-        navigator.mediaSession.metadata = new MediaMetadata({ title: title, artist: 'Luke Grecki', album: list.getAttribute('data-album') || '' });
+      if (!playedOnce) { playedOnce = true; track('play', 'Played'); }
+      if (session && window.MediaMetadata) {
+        session.metadata = new MediaMetadata({ title: title, artist: 'Luke Grecki', album: list.getAttribute('data-album') || '', artwork: ARTWORK });
+        session.playbackState = 'playing';
       }
       paint();
     });
     audio.addEventListener('pause', function () {
       row.classList.remove('is-playing');
       btn.setAttribute('aria-label', 'Play ' + title);
+      if (session && current === audio) session.playbackState = 'paused';
       paint();
     });
+    audio.addEventListener('timeupdate', function () {
+      if (!session || !session.setPositionState || current !== audio) return;
+      var d = length();
+      if (!d || !isFinite(d)) return;
+      try { session.setPositionState({ duration: d, playbackRate: audio.playbackRate || 1, position: Math.min(audio.currentTime, d) }); } catch (e) {}
+    });
     audio.addEventListener('ended', function () {
+      track('finished', 'Listened to the end');
       audio.currentTime = 0;
       paint();
       var next = rows[i + 1];
@@ -114,4 +133,25 @@
 
     paint();
   });
+
+  // ---------- lock screen, headphones and media keys ----------
+  if (session) {
+    var indexOfCurrent = function () {
+      for (var k = 0; k < rows.length; k++) if (rows[k].querySelector('audio') === current) return k;
+      return -1;
+    };
+    var press = function (k) { var r = rows[k]; if (r) r.querySelector('.track__btn').click(); };
+    var on = function (action, fn) { try { session.setActionHandler(action, fn); } catch (e) { /* not supported here */ } };
+    on('play', function () { if (current) current.play(); else press(0); });
+    on('pause', function () { if (current) current.pause(); });
+    on('previoustrack', function () {
+      var k = indexOfCurrent();
+      if (current && (current.currentTime > 3 || k <= 0)) { current.currentTime = 0; if (current.paused) current.play(); }
+      else press(k - 1);
+    });
+    on('nexttrack', function () { var k = indexOfCurrent(); if (k < rows.length - 1) press(k + 1); });
+    on('seekbackward', function (d) { if (current) current.currentTime = Math.max(0, current.currentTime - ((d && d.seekOffset) || 10)); });
+    on('seekforward', function (d) { if (current) current.currentTime = Math.min(current.duration || Infinity, current.currentTime + ((d && d.seekOffset) || 10)); });
+    on('seekto', function (d) { if (current && d && isFinite(d.seekTime)) current.currentTime = d.seekTime; });
+  }
 })();

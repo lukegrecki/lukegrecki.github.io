@@ -1,8 +1,19 @@
 /* Sky — time of day, season and moon phase, shared by every page.
+   Loaded in <head> (not deferred) so the right colors paint first.
    Sets <html data-time> (the CSS reads it) and fires:
      'skychange' when the period or season changes,
      'skytick'   every 30 seconds.
-   Preview any moment with ?time=dawn|day|dusk|night and ?season=spring|summer|autumn|winter. */
+
+   Where the visitor is: their browser's time zone (e.g. America/New_York) is looked up in
+   tz.js for rough coordinates. No location permission is asked for.
+   - Time of day follows the real sun there: dawn and dusk are when it is within 9° of the
+     horizon (morning or evening), day above that, night below.
+   - Seasons flip south of the equator, and the moon's lit side is mirrored there.
+   - If the time zone is unknown (e.g. plain UTC), it falls back to fixed hours: dawn 5–8,
+     day 8–17, dusk 17–20, night otherwise, with northern seasons.
+
+   Preview: ?time=dawn|day|dusk|night  ?season=spring|summer|autumn|winter
+            ?tz=Australia/Sydney (see the site as a visitor in that time zone would, right now) */
 (function () {
   'use strict';
 
@@ -10,18 +21,82 @@
   var REF = Date.UTC(2000, 0, 6, 18, 14);    // a known new moon
   var PERIODS = ['dawn', 'day', 'dusk', 'night'];
   var SEASONS = ['spring', 'summer', 'autumn', 'winter'];
+  var EDGE = 9;                              // degrees of sun altitude that count as dawn/dusk
+  var RAD = Math.PI / 180;
 
   var params = new URLSearchParams(window.location.search);
   var forcedTime = PERIODS.indexOf(params.get('time')) >= 0 ? params.get('time') : null;
   var forcedSeason = SEASONS.indexOf(params.get('season')) >= 0 ? params.get('season') : null;
 
+  // ---------- where: time zone -> rough coordinates ----------
+  function systemZone() {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; }
+  }
+  var zone = systemZone();
+  var fmt = null;
+  function makeFormat(tz) {
+    return new Intl.DateTimeFormat('en-US', { timeZone: tz || undefined, hour: 'numeric', minute: 'numeric', month: 'numeric', hourCycle: 'h23' });
+  }
+  if (params.get('tz')) {
+    try { fmt = makeFormat(params.get('tz')); zone = params.get('tz'); } catch (e) { fmt = null; }
+  }
+  if (!fmt) { try { fmt = makeFormat(zone); } catch (e) { fmt = null; } }
+
+  function lookup(name) {
+    var T = window.TZ_COORDS;
+    if (!T || !name) return null;
+    var i = name.indexOf('/');
+    var group = i < 0 ? T[''] : T[name.slice(0, i)];
+    var c = group && group[i < 0 ? name : name.slice(i + 1)];
+    return c ? { lat: c[0], lon: c[1] } : null;
+  }
+  var place = lookup(zone);
+  var south = !!place && place.lat < 0;
+
+  // Hour, minute and month in the visitor's (or previewed) time zone.
+  function localParts(d) {
+    if (fmt && fmt.formatToParts) {
+      var o = {};
+      fmt.formatToParts(d).forEach(function (p) { o[p.type] = p.value; });
+      return { hour: Number(o.hour) % 24, minute: Number(o.minute), month: Number(o.month) - 1 };
+    }
+    return { hour: d.getHours(), minute: d.getMinutes(), month: d.getMonth() };
+  }
+
+  // ---------- when: the sun's altitude ----------
+  // Low-precision solar position (accurate to a fraction of a degree), from the
+  // Astronomical Almanac's approximation. Returns altitude in degrees and whether
+  // it is before local solar noon.
+  function sunAt(d, lat, lon) {
+    var n = d.getTime() / 86400000 - 10957.5;            // days since J2000.0
+    var g = (357.529 + 0.98560028 * n) * RAD;             // mean anomaly
+    var q = 280.459 + 0.98564736 * n;                     // mean longitude
+    var L = (q + 1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) * RAD;
+    var e = (23.439 - 0.00000036 * n) * RAD;              // obliquity
+    var ra = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)) / RAD;
+    var dec = Math.asin(Math.sin(e) * Math.sin(L));
+    var gmst = 280.46061837 + 360.98564736629 * n;        // sidereal time, degrees
+    var H = ((gmst + lon - ra) % 360 + 540) % 360 - 180;  // hour angle; negative = morning
+    var alt = Math.asin(Math.sin(lat * RAD) * Math.sin(dec) + Math.cos(lat * RAD) * Math.cos(dec) * Math.cos(H * RAD)) / RAD;
+    return { alt: alt, morning: H < 0 };
+  }
+
   function periodOf(d) {
-    var h = d.getHours() + d.getMinutes() / 60;
+    if (place) {
+      var s = sunAt(d, place.lat, place.lon);
+      return s.alt >= EDGE ? 'day' : s.alt < -EDGE ? 'night' : (s.morning ? 'dawn' : 'dusk');
+    }
+    var p = localParts(d), h = p.hour + p.minute / 60;
     return h >= 5 && h < 8 ? 'dawn' : h >= 8 && h < 17 ? 'day' : h >= 17 && h < 20 ? 'dusk' : 'night';
   }
   function seasonOf(d) {
-    var m = d.getMonth();
+    var m = localParts(d).month;
+    if (south) m = (m + 6) % 12;
     return m >= 2 && m <= 4 ? 'spring' : m >= 5 && m <= 7 ? 'summer' : m >= 8 && m <= 10 ? 'autumn' : 'winter';
+  }
+  function clock(d) {
+    var p = localParts(d || new Date());
+    return String(p.hour).padStart(2, '0') + ':' + String(p.minute).padStart(2, '0');
   }
   function moonAge(d) {
     return (((d.getTime() - REF) / 86400000) % SYN + SYN) % SYN;
@@ -119,6 +194,11 @@
   window.Sky = {
     get time() { return state.time; },
     get season() { return state.season; },
+    south: south,                // southern hemisphere: the moon's lit side is mirrored
+    zone: zone,
+    place: place,                // { lat, lon } or null
+    clock: clock,                // 'HH:MM' in the visitor's time zone
+    sun: function (d) { return place ? sunAt(d || new Date(), place.lat, place.lon) : null; },
     palette: function () { return PAL[state.time]; },
     shoreline: function () { return SEA[state.season]; },
     moonAge: function () { return moonAge(new Date()); },

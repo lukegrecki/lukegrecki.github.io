@@ -8,18 +8,20 @@
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="alternate" type="application/atom+xml" title="Luke Grecki: Poems" href="https://lukegrecki.com/poems/feed.xml">
 <meta property="og:site_name" content="Luke Grecki">
 <meta property="og:image" content="https://lukegrecki.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="A pixel moon over dark water, its reflection breaking into horizontal strokes">
 <meta name="twitter:card" content="summary_large_image">
-<script>(function(){var q=new URLSearchParams(location.search).get('time'),h=new Date().getHours();document.documentElement.setAttribute('data-time',/^(dawn|day|dusk|night)$/.test(q)?q:h>=5&&h<8?'dawn':h>=8&&h<17?'day':h>=17&&h<20?'dusk':'night')})()</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+<script src="../assets/js/tz.js"></script>
+<script src="../assets/js/sky.js"></script>
+<script src="../assets/js/analytics.js"></script>
+<script data-goatcounter="https://lukegrecki.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<link rel="preload" href="../assets/fonts/spectral-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/silkscreen-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/site.css">
-<script src="../assets/js/sky.js" defer></script>
 <script src="../assets/js/horizon.js" defer></script>
 </head>
 <body>
@@ -31,7 +33,7 @@
       <ul class="site-nav pixel">
         <li><a class="navlink" href="../work/">Work</a></li>
         <li><a class="navlink" href="../music/">Music</a></li>
-        <li><a class="navlink" href="../writing/">Writing</a></li>
+        <li><a class="navlink" href="../poems/">Poems</a></li>
         <li><a class="navlink" href="../about/" aria-current="page">About</a></li>
       </ul>
     </nav>
@@ -55,20 +57,20 @@
     <dl class="contact">
       <div>
         <dt class="pixel">Write to me</dt>
-        <dd><a class="textlink" href="mailto:lukegrecki@gmail.com">lukegrecki@gmail.com</a></dd>
+        <dd><a class="textlink" href="mailto:lukegrecki@gmail.com" data-goatcounter-click="outbound/email" data-goatcounter-title="Email">lukegrecki@gmail.com</a></dd>
       </div>
       <div>
         <dt class="pixel">Listen</dt>
         <dd>
-          <a class="textlink" href="https://open.spotify.com/artist/04tZv4T66tYdaY0AHdC5m4" target="_blank" rel="noopener">Spotify</a>
-          <a class="textlink" href="https://music.apple.com/us/artist/luke-grecki/1170921321" target="_blank" rel="noopener">Apple Music</a>
+          <a class="textlink" href="https://open.spotify.com/artist/04tZv4T66tYdaY0AHdC5m4" data-goatcounter-click="outbound/spotify-artist" data-goatcounter-title="Spotify: artist page" target="_blank" rel="noopener">Spotify</a>
+          <a class="textlink" href="https://music.apple.com/us/artist/luke-grecki/1170921321" data-goatcounter-click="outbound/apple-music-artist" data-goatcounter-title="Apple Music: artist page" target="_blank" rel="noopener">Apple Music</a>
         </dd>
       </div>
       <div>
         <dt class="pixel">Code</dt>
         <dd>
-          <a class="textlink" href="https://github.com/lukegrecki">GitHub</a>
-          <a class="textlink" href="https://www.linkedin.com/in/lukegrecki/">LinkedIn</a>
+          <a class="textlink" href="https://github.com/lukegrecki" data-goatcounter-click="outbound/github" data-goatcounter-title="GitHub">GitHub</a>
+          <a class="textlink" href="https://www.linkedin.com/in/lukegrecki/" data-goatcounter-click="outbound/linkedin" data-goatcounter-title="LinkedIn">LinkedIn</a>
         </dd>
       </div>
     </dl>

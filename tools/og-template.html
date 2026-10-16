@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" data-time="night">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Share image template</title>
+<!-- Used by tools/build.py to draw each poem's 1200×630 share image.
+     Open /tools/og-template.html?time=dusk&title=Your%20title to preview. -->
+<link rel="stylesheet" href="/assets/css/site.css">
+<style>
+html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+*, *::before, *::after { animation: none !important; }
+.frame { position: relative; width: 1200px; height: 630px; overflow: hidden; }
+/* the scene is drawn wider than the frame so the sun or moon sits right of centre */
+.frame .scene { position: absolute; left: 0; top: 0; width: 1760px; height: 630px; min-height: 0; }
+.frame .scene__readout { display: none; }
+html[data-time="day"]   .scene__orb { bottom: 150px !important; }
+html[data-time="night"] .scene__orb { bottom: 120px !important; }
+html[data-time="dusk"]  .scene__orb { bottom: 36px !important; }
+.og-label { position: absolute; left: 64px; top: 52px; margin: 0; font-size: 13px; letter-spacing: 0.16em; color: var(--scene-readout); }
+.og-title { position: absolute; left: 64px; bottom: 72px; max-width: 610px; margin: 0; font-weight: 300; font-size: 62px; line-height: 1.04; letter-spacing: -0.01em; color: var(--scene-text); text-shadow: 0 1px 18px rgba(0,0,0,.18); }
+</style>
+<script src="/assets/js/tz.js"></script>
+<script src="/assets/js/sky.js"></script>
+<script src="/assets/js/scene.js" defer></script>
+</head>
+<body>
+<div class="frame">
+  <main class="scene" data-scene>
+    <div class="scene__sky" aria-hidden="true"><div class="bands"></div><div class="scene__orb"></div><div class="scene__hills"></div></div>
+    <div class="scene__water" aria-hidden="true"><div class="bands"></div><div class="scene__refl"></div></div>
+    <p class="scene__readout pixel"></p>
+  </main>
+  <p class="og-label pixel">Poem · Luke Grecki</p>
+  <h1 class="og-title"></h1>
+</div>
+<script>
+  document.querySelector('.og-title').textContent = new URLSearchParams(location.search).get('title') || '';
+  // keep the water beside the title clear of glints
+  window.addEventListener('load', function () {
+    document.querySelectorAll('.scene__refl > div').forEach(function (d) {
+      if (d.getBoundingClientRect().left < 720) d.remove();
+    });
+    document.documentElement.setAttribute('data-ready', '1');
+  });
+</script>
+</body>
+</html>
