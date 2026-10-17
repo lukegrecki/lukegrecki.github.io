@@ -97,8 +97,8 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 
 .eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.16em; color: var(--accent); }
 .title {
-  margin: 18px 0 0; max-width: 20ch;
-  font-weight: 300; font-size: clamp(36px, 4.6vw, 56px); line-height: 1.1; letter-spacing: -0.01em;
+  margin: 18px 0 0; max-width: 30ch;
+  font-weight: 300; font-size: clamp(30px, 3.6vw, 44px); line-height: 1.15; letter-spacing: -0.01em;
 }
 .lede { margin: 24px 0 0; max-width: 54ch; font-size: 20px; line-height: 1.6; color: var(--muted); }
 .prose { margin-top: 32px; max-width: 60ch; display: flex; flex-direction: column; gap: 20px; line-height: 1.65; }
@@ -210,7 +210,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 .release__info { flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
 .release__info p, .release__info h2 { margin: 0; }
 .release__kicker { font-size: 12px; letter-spacing: 0.16em; color: var(--muted); }
-.release__title { font-weight: 300; font-size: clamp(32px, 3.6vw, 44px); line-height: 1.1; }
+.release__title { font-weight: 300; font-size: clamp(28px, 3vw, 36px); line-height: 1.1; }
 .release__meta { font-size: 18px; line-height: 1.5; color: var(--muted); }
 .release__links { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 19px; }
 
@@ -249,7 +249,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 .back { display: inline-flex; align-items: center; gap: 10px; padding: 12px 0; color: var(--muted); }
 .poem { margin-top: clamp(40px, 6vw, 64px); }
 .poem__head { display: flex; flex-direction: column; gap: 14px; }
-.poem__head h1 { margin: 0; font-weight: 300; font-size: clamp(36px, 4.4vw, 48px); line-height: 1.1; }
+.poem__head h1 { margin: 0; font-weight: 300; font-size: clamp(30px, 3.4vw, 40px); line-height: 1.15; }
 .poem__head p { margin: 0; color: var(--muted); }
 .poem__body { margin-top: 56px; display: flex; flex-direction: column; gap: 56px; }
 .poem__part { display: flex; flex-direction: column; gap: 20px; }
