@@ -7,7 +7,8 @@
 Reads poems/poems.json (order = order on the Poems page) and writes:
   poems/feed.xml          Atom feed with the full text of each poem
   sitemap.xml               every page on the site
-  assets/og/<slug>.png      1200x630 share image per poem (needs: pip install playwright
+  assets/og/<slug>.png      1200x630 share image per poem, plus assets/og-image.png for other pages
+                            (needs: pip install playwright
                             && playwright install chromium)
   og:image tags             in each poem's index.html
 
@@ -116,7 +117,8 @@ def set_share_tags(p):
 
 def build_images(poems, redraw):
     todo = [p for p in poems if redraw or not os.path.exists(path('assets', 'og', p['slug'] + '.png'))]
-    if not todo:
+    home = redraw or not os.path.exists(path('assets', 'og-image.png'))
+    if not todo and not home:
         print('share images up to date')
         return
     try:
@@ -142,6 +144,15 @@ def build_images(poems, redraw):
             page.evaluate('document.fonts.ready')
             page.screenshot(path=path('assets', 'og', p['slug'] + '.png'))
             print('drew', f"assets/og/{p['slug']}.png")
+            page.close()
+        if home:
+            # the site-wide share image: the scene at dusk, centred, no text (matches the icons)
+            page = browser.new_page(viewport={'width': 1200, 'height': 630})
+            page.clock.set_fixed_time(FULL_MOON)
+            page.goto(f'{base}/tools/og-template.html?home=1&time=dusk&season=autumn', wait_until='networkidle')
+            page.wait_for_selector('html[data-ready]')
+            page.screenshot(path=path('assets', 'og-image.png'))
+            print('drew assets/og-image.png')
             page.close()
         browser.close()
     server.shutdown()

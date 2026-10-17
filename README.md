@@ -17,7 +17,7 @@ Personal site of Luke Grecki: a moon over water on the front door, and quiet pag
 - **Motion** is slow and ambient. For visitors who have reduced motion set in their system settings, the water stops moving and clouds and particles freeze where they are.
 - **Fonts** (Spectral and Silkscreen) are served from `assets/fonts/`, so visitors' browsers don't contact Google. Both are under the SIL Open Font License; the license files sit beside them.
 - **The EP player** works with lock screens, headphones and media keys: play/pause, next/previous track, and seeking.
-- **Sharing:** each poem has its own share image (`assets/og/<poem>.png`) showing its title over the scene at a fixed time of day. Other pages use `assets/og-image.png`.
+- **Sharing:** each poem has its own share image (`assets/og/<poem>.png`) showing its title over the scene at a fixed time of day. Other pages use `assets/og-image.png`, the scene at dusk with no text, matching the site icons. `python3 tools/build.py --images` redraws all of them.
 - **For search engines and feed readers:** `sitemap.xml` and `robots.txt`, plus an Atom feed of the poems at `poems/feed.xml` (linked from the Poems page).
 
 ## Analytics

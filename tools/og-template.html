@@ -5,7 +5,8 @@
 <meta name="robots" content="noindex">
 <title>Share image template</title>
 <!-- Used by tools/build.py to draw each poem's 1200×630 share image.
-     Open /tools/og-template.html?time=dusk&title=Your%20title to preview. -->
+     Open /tools/og-template.html?time=dusk&title=Your%20title to preview.
+     With home=1 it draws the site-wide image instead: the scene centred, with no text. -->
 <link rel="stylesheet" href="/assets/css/site.css">
 <style>
 html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
@@ -17,9 +18,12 @@ html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
 html[data-time="day"]   .scene__orb { bottom: 150px !important; }
 html[data-time="night"] .scene__orb { bottom: 120px !important; }
 html[data-time="dusk"]  .scene__orb { bottom: 36px !important; }
+html.home .frame .scene { width: 1200px; }
+html.home .og-label, html.home .og-title { display: none; }
 .og-label { position: absolute; left: 64px; top: 52px; margin: 0; font-size: 13px; letter-spacing: 0.16em; color: var(--scene-readout); }
 .og-title { position: absolute; left: 64px; bottom: 72px; max-width: 610px; margin: 0; font-weight: 300; font-size: 62px; line-height: 1.04; letter-spacing: -0.01em; color: var(--scene-text); text-shadow: 0 1px 18px rgba(0,0,0,.18); }
 </style>
+<script>if (new URLSearchParams(location.search).get('home')) document.documentElement.classList.add('home');</script>
 <script src="/assets/js/tz.js"></script>
 <script src="/assets/js/sky.js"></script>
 <script src="/assets/js/scene.js" defer></script>
@@ -36,9 +40,9 @@ html[data-time="dusk"]  .scene__orb { bottom: 36px !important; }
 </div>
 <script>
   document.querySelector('.og-title').textContent = new URLSearchParams(location.search).get('title') || '';
-  // keep the water beside the title clear of glints
+  // keep the water beside the title clear of glints (not needed for the textless home image)
   window.addEventListener('load', function () {
-    document.querySelectorAll('.scene__refl > div').forEach(function (d) {
+    if (!document.documentElement.classList.contains('home')) document.querySelectorAll('.scene__refl > div').forEach(function (d) {
       if (d.getBoundingClientRect().left < 720) d.remove();
     });
     document.documentElement.setAttribute('data-ready', '1');
