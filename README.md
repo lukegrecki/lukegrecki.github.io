@@ -67,6 +67,7 @@ assets/img/portrait.jpg
   3. Update the Previous/Next links at the bottom of its neighbors (`<nav class="poem-nav">`).
   4. Add it to `poems/poems.json`, choosing a time of day for its image (`dawn`, `day`, `dusk` or `night`).
   5. Run `python3 tools/build.py`. This draws its share image and updates the feed and sitemap. Drawing the image needs Playwright once: `pip install playwright && playwright install chromium`.
+- **Edit the styles:** after changing `assets/css/site.css`, run `python3 tools/build.py --css`. It sets every page's stylesheet link to `/assets/css/site.css?v=<hash>`, a short hash of the file's contents, so visitors' browsers fetch the new styles straight away but keep using their cached copy until it changes again. (A full `python3 tools/build.py` does this too.)
 - **Add a track or release:** copy a `<li class="track">` block in `music/index.html`. Then put the MP3 in `assets/audio/` and set `data-duration` to its length in seconds.
 - **Replace the pixel cover with real art:** swap `<div class="cover" data-cover …>` for an `<img class="cover" src="../assets/img/neon-grotto.jpg" alt="Neon Grotto cover">`.
 

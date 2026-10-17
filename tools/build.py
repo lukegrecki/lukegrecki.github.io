@@ -3,6 +3,7 @@
 
     python3 tools/build.py            # feed, sitemap, share tags, and any missing share images
     python3 tools/build.py --images   # also redraw every share image
+    python3 tools/build.py --css      # only update the site.css version on every page
 
 Reads poems/poems.json (order = order on the Poems page) and writes:
   poems/feed.xml          Atom feed with the full text of each poem
@@ -11,10 +12,14 @@ Reads poems/poems.json (order = order on the Poems page) and writes:
                             (needs: pip install playwright
                             && playwright install chromium)
   og:image tags             in each poem's index.html
+  ?v=<hash> on site.css     every page's stylesheet link becomes /assets/css/site.css?v=<hash>, where
+                            <hash> is the first 8 hex digits of the stylesheet's SHA-256. It changes
+                            only when site.css changes, so browsers re-download it after an edit.
 
 The poem pages, the Poems list and the Previous/Next links are still edited by hand.
 """
 import datetime
+import hashlib
 import functools
 import html
 import http.server
@@ -158,7 +163,32 @@ def build_images(poems, redraw):
     server.shutdown()
 
 
+CSS_LINK = re.compile(r'href="[^"]*assets/css/site\.css(?:\?v=[0-9a-f]*)?"')
+
+
+def stamp_css():
+    """Point every page's stylesheet link at /assets/css/site.css?v=<hash of its contents>."""
+    with open(path('assets', 'css', 'site.css'), 'rb') as f:
+        digest = hashlib.sha256(f.read()).hexdigest()[:8]
+    href = f'href="/assets/css/site.css?v={digest}"'
+    for folder, dirs, files in os.walk(ROOT):
+        dirs[:] = [d for d in dirs if not d.startswith('.') and d != 'node_modules']
+        for name in files:
+            if not name.endswith('.html'):
+                continue
+            full = os.path.join(folder, name)
+            with open(full, encoding='utf-8') as f:
+                page = f.read()
+            new = CSS_LINK.sub(href, page)
+            if new != page:
+                write(os.path.relpath(full, ROOT), new)
+    print('site.css version', digest)
+
+
 if __name__ == '__main__':
+    stamp_css()
+    if '--css' in sys.argv:
+        sys.exit()
     poems = load_poems()
     build_images(poems, redraw='--images' in sys.argv)
     for p in poems:
