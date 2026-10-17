@@ -123,14 +123,13 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 .horizon > div, .scene div { position: absolute; }
 .horizon__sky { left: 0; right: 0; top: 0; height: 32px; }
 .horizon__clouds { inset: 0; }
-.horizon__orb { top: 0; left: calc(50% - 16px); width: 32px; height: 32px; }
 .horizon__hills { left: 0; top: 20px; width: 2560px; height: 12px; display: flex; align-items: flex-end; }
 .horizon__water { left: 0; right: 0; top: 32px; height: 20px; }
 .horizon__refl { left: 0; right: 0; top: 32px; bottom: 0; }
 .horizon__sky > div, .horizon__water > div { position: static; height: 4px; }
 .horizon__hills > div { position: static; flex: 0 0 4px; }
 .scene .bands > div, .scene__hills > div { position: static; }
-.horizon__orb > div, .horizon__refl > div, .horizon__clouds > div { position: absolute; }
+.horizon__refl > div, .horizon__clouds > div { position: absolute; }
 .horizon__clouds > div { width: 4px; height: 4px; }
 
 /* ---------- home scene ---------- */
