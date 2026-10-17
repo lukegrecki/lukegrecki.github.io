@@ -108,17 +108,18 @@
     return names[0];
   }
 
-  // Scene palettes: sky and water stops, the sun/moon, its reflection.
+  // Scene palettes: sky and water stops, the sun/moon, its reflection. sh and hi are the hues
+  // that shadows and highlights lean toward, so darker areas shift color instead of just going grey.
   var PAL = {
-    dawn:  { sky: ['#3a3760', '#8a5f86', '#e59a8f', '#f6c79c'], water: ['#5a4f74', '#3a3557', '#262340'], orb: '#fde8c2', refl: '#ffd9a8', hill: '#6e5a72', shade: 0.5,  orbBottom: -46 },
-    day:   { sky: ['#7fb7cc', '#a9d2d6', '#d7e9d9', '#f1efd8'], water: ['#6aa3aa', '#4a8189', '#2f5f68'], orb: '#fffaf0', refl: '#fffbe9', hill: '#7d9c8a', shade: 0.12, orbBottom: 210 },
-    dusk:  { sky: ['#2b2445', '#6b3c62', '#c9645f', '#efa365'], water: ['#4a3150', '#2c2038', '#18121f'], orb: '#f7b866', refl: '#f4a95e', hill: '#5a3346', shade: 0.6,  orbBottom: 52 },
-    night: { sky: ['#0c1027', '#141b3c', '#1f2852', '#2e3866'], water: ['#1a2148', '#0e1230', '#070918'], orb: '#f2d88c', refl: '#e9c977', hill: '#1a2040', shade: 0.82, orbBottom: 150 }
+    dawn:  { sky: ['#3a3760', '#8a5f86', '#e59a8f', '#f6c79c'], water: ['#5a4f74', '#3a3557', '#262340'], orb: '#fde8c2', refl: '#ffd9a8', hill: '#6e5a72', shade: 0.5,  orbBottom: -48, sh: '#4a2d6b', hi: '#ffe6c9', sunEdge: '#f2a98a', cloudO: 0.9 },
+    day:   { sky: ['#7fb7cc', '#a9d2d6', '#d7e9d9', '#f1efd8'], water: ['#6aa3aa', '#4a8189', '#2f5f68'], orb: '#fffaf0', refl: '#fffbe9', hill: '#7d9c8a', shade: 0.12, orbBottom: 208, sh: '#2f4f86', hi: '#fffbe8', sunEdge: '#f6e2b0', cloudO: 1 },
+    dusk:  { sky: ['#2b2445', '#6b3c62', '#c9645f', '#efa365'], water: ['#4a3150', '#2c2038', '#18121f'], orb: '#f7b866', refl: '#f4a95e', hill: '#5a3346', shade: 0.6,  orbBottom: 52,  sh: '#3d1d52', hi: '#ffd6a0', sunEdge: '#e27a4a', cloudO: 0.9 },
+    night: { sky: ['#0c1027', '#141b3c', '#1f2852', '#2e3866'], water: ['#1a2148', '#0e1230', '#070918'], orb: '#f2d88c', refl: '#e9c977', hill: '#1a2040', shade: 0.82, orbBottom: 152, sh: '#0b0f33', hi: '#e8ecff', sunEdge: '#f2d88c', cloudO: 0.55 }
   };
   // Distant shoreline color per season.
   var SEA = { spring: '#6c8d5a', summer: '#4d7046', autumn: '#8a5a3c', winter: '#7c8794' };
 
-  function hex(h) { var n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+  function hex(h) { var n = parseInt(h.slice(1, 7), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
   function mix(a, b, t) {
     var A = hex(a), B = hex(b);
     return '#' + A.map(function (v, i) { return Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0'); }).join('');
@@ -160,7 +161,9 @@
     colors.forEach(function (c, i) {
       out.push(el('', 'flex:1 1 0;background:' + c));
       if (i < colors.length - 1) {
-        out.push(el('', 'flex:0 0 ' + stripPx + 'px;background:repeating-conic-gradient(' + c + ' 0 25%,' + colors[i + 1] + ' 0 50%) 0 0/4px 4px'));
+        // a 2px seam uses 2px cells; wider seams use 4px cells to sit on the pixel grid
+        var tile = stripPx >= 8 ? 8 : 4;
+        out.push(el('', 'flex:0 0 ' + stripPx + 'px;background:repeating-conic-gradient(' + c + ' 0 25%,' + colors[i + 1] + ' 0 50%) 0 0/' + tile + 'px ' + tile + 'px'));
       }
     });
     return out;
@@ -175,6 +178,16 @@
     }
     return rows;
   }
+
+  // Round to the 4px pixel grid everything in the scenes is drawn on.
+  function q4(v) { return Math.round(v / 4) * 4; }
+  // A small pixel sprite as one 4px element's box-shadow: cells are [column, row, color].
+  // Offsets start at 4px so no cell sits under the (transparent) element itself.
+  function sprite(cells) {
+    return cells.map(function (c) { return (4 + c[0] * 4) + 'px ' + (4 + c[1] * 4) + 'px 0 ' + c[2]; }).join(',');
+  }
+  // One 4px-cell checkerboard between two colors, as a background.
+  function dither(a, b) { return 'repeating-conic-gradient(' + a + ' 0 25%,' + b + ' 0 50%) 0 0/8px 8px'; }
 
   var now = new Date();
   var state = { time: forcedTime || periodOf(now), season: forcedSeason || seasonOf(now) };
@@ -204,6 +217,7 @@
     moonAge: function () { return moonAge(new Date()); },
     phaseName: phaseName,
     SYN: SYN,
-    mix: mix, ramp: ramp, rng: rng, el: el, fill: fill, banded: banded, discRows: discRows
+    mix: mix, ramp: ramp, rng: rng, el: el, fill: fill, banded: banded, discRows: discRows,
+    q4: q4, sprite: sprite, dither: dither
   };
 })();

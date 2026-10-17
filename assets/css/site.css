@@ -121,14 +121,17 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
   background: linear-gradient(to bottom, var(--sky0), var(--sky3) 32px, var(--water0) 32px, var(--water2));
 }
 .horizon > div, .scene div { position: absolute; }
-.horizon__sky { left: 0; right: 0; top: 0; height: 32px; display: flex; flex-direction: column; }
-.horizon__orb { top: 11px; left: calc(50% - 9px); width: 18px; height: 18px; }
-.horizon__hills { left: 0; right: 0; top: 26px; height: 6px; display: flex; align-items: flex-end; }
-.horizon__water { left: 0; right: 0; top: 32px; bottom: 0; display: flex; flex-direction: column; }
+.horizon__sky { left: 0; right: 0; top: 0; height: 32px; }
+.horizon__clouds { inset: 0; }
+.horizon__orb { top: 0; left: calc(50% - 16px); width: 32px; height: 32px; }
+.horizon__hills { left: 0; top: 20px; width: 2560px; height: 12px; display: flex; align-items: flex-end; }
+.horizon__water { left: 0; right: 0; top: 32px; height: 20px; }
 .horizon__refl { left: 0; right: 0; top: 32px; bottom: 0; }
-.horizon__sky > div, .horizon__water > div, .horizon__hills > div,
+.horizon__sky > div, .horizon__water > div { position: static; height: 4px; }
+.horizon__hills > div { position: static; flex: 0 0 4px; }
 .scene .bands > div, .scene__hills > div { position: static; }
-.horizon__orb > div, .horizon__refl > div { position: absolute; }
+.horizon__orb > div, .horizon__refl > div, .horizon__clouds > div { position: absolute; }
+.horizon__clouds > div { width: 4px; height: 4px; }
 
 /* ---------- home scene ---------- */
 .scene {
@@ -139,8 +142,13 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 .scene__water { left: 0; right: 0; bottom: 0; height: 40%; overflow: hidden; background: linear-gradient(var(--water0), var(--water2)); }
 .scene .bands { inset: 0; display: flex; flex-direction: column; }
 .scene__orb { left: calc(50% - 96px); width: 192px; height: 192px; bottom: 60px; }
-.scene__hills { left: 0; right: 0; bottom: 0; height: 30px; display: flex; align-items: flex-end; }
+.scene__clouds { inset: 0; }
+.scene__clouds > div { width: 4px; height: 4px; }
+.scene__hills { left: 0; bottom: 0; width: 2560px; height: 48px; display: flex; align-items: flex-end; }
+.scene__hills > div { flex: 0 0 4px; }
 .scene__refl { inset: 0; }
+.scene__particles { inset: 0; overflow: hidden; pointer-events: none; }
+.scene__particles > div > div { width: 4px; height: 4px; margin: -4px 0 0 -4px; }
 .scene__readout {
   position: absolute; top: clamp(20px, 4vw, 44px); left: clamp(24px, 5vw, 72px); margin: 0;
   letter-spacing: 0.12em; color: var(--scene-readout);
@@ -162,6 +170,28 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 @media (prefers-reduced-motion: reduce) {
   .drift, .twinkle, .breathe { animation: none !important; }
   .navlink::before { transition: none; }
+}
+
+/* Pixel motion: everything moves in exact 4px steps, so distances are fixed in px.
+   Clouds travel 2400px in 600 steps, particles 1200px in 300, fireflies 12px in 3 per leg. */
+.pxdrift { animation: pxdrift 7s steps(3, jump-none) infinite alternate; }
+@keyframes pxdrift { from { transform: translateX(-4px); } to { transform: translateX(4px); } }
+.pxtwinkle { animation: pxtwinkle 4s steps(3, jump-none) infinite alternate; }
+@keyframes pxtwinkle { from { opacity: 0; } to { opacity: 1; } }
+.pxcloud { animation: pxcloud 600s steps(600) infinite; }
+@keyframes pxcloud { from { transform: translateX(0); } to { transform: translateX(2400px); } }
+.pxfall { animation: pxfall 40s steps(300) infinite; }
+.pxrise { animation: pxfall 60s steps(300) infinite reverse; }
+@keyframes pxfall { from { transform: translateY(-24px); } to { transform: translateY(1176px); } }
+.pxsway { animation: pxsway 5s steps(5, jump-none) infinite alternate; }
+@keyframes pxsway { from { transform: translateX(-8px); } to { transform: translateX(8px); } }
+.pxwander { animation: pxwander 8s steps(3) infinite; }
+@keyframes pxwander { 0% { transform: translate(0, 0); } 25% { transform: translate(12px, -12px); } 50% { transform: translate(0, -24px); } 75% { transform: translate(-12px, -12px); } 100% { transform: translate(0, 0); } }
+.pxblink { animation: pxblink 3s steps(3, jump-none) infinite; }
+@keyframes pxblink { 0% { opacity: .15; } 45% { opacity: 1; } 55% { opacity: 1; } 100% { opacity: .15; } }
+/* With reduced motion, pause rather than remove, so clouds and particles stay where they are. */
+@media (prefers-reduced-motion: reduce) {
+  .pxdrift, .pxtwinkle, .pxcloud, .pxfall, .pxrise, .pxsway, .pxwander, .pxblink { animation-play-state: paused !important; }
 }
 
 /* ---------- work ---------- */

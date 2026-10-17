@@ -12,7 +12,9 @@ Personal site of Luke Grecki: a moon over water on the front door, and quiet pag
 - **Preview another moment** by adding query parameters:
   - `/?time=night&season=winter` or `/music/?time=dawn` forces a period or season.
   - `/?tz=Australia/Sydney` shows the site as a visitor in that time zone sees it right now.
-- **Motion** is slow and ambient. It switches off for visitors who have reduced motion set in their system settings.
+- **Pixel art.** The home scene and the strip under each inner page's header are drawn on one 4px grid, and everything moves in 4px steps. Shadows lean toward a cooler hue for each time of day rather than just getting darker, and there are two shorelines: a hazy far one and a near one with a lit top edge.
+- **Clouds and seasons.** Two to four wispy clouds drift across the sky (fewer at night). A few seasonal particles drift through the home scene: petals in spring, pollen on summer days, fireflies on summer evenings, leaves in autumn and snow in winter.
+- **Motion** is slow and ambient. For visitors who have reduced motion set in their system settings, the water stops moving and clouds and particles freeze where they are.
 - **Fonts** (Spectral and Silkscreen) are served from `assets/fonts/`, so visitors' browsers don't contact Google. Both are under the SIL Open Font License; the license files sit beside them.
 - **The EP player** works with lock screens, headphones and media keys: play/pause, next/previous track, and seeking.
 - **Sharing:** each poem has its own share image (`assets/og/<poem>.png`) showing its title over the scene at a fixed time of day. Other pages use `assets/og-image.png`.

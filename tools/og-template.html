@@ -13,7 +13,7 @@ html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
 .frame { position: relative; width: 1200px; height: 630px; overflow: hidden; }
 /* the scene is drawn wider than the frame so the sun or moon sits right of centre */
 .frame .scene { position: absolute; left: 0; top: 0; width: 1760px; height: 630px; min-height: 0; }
-.frame .scene__readout { display: none; }
+.frame .scene__readout, .frame .scene__particles, .frame .scene__clouds { display: none; }
 html[data-time="day"]   .scene__orb { bottom: 150px !important; }
 html[data-time="night"] .scene__orb { bottom: 120px !important; }
 html[data-time="dusk"]  .scene__orb { bottom: 36px !important; }
