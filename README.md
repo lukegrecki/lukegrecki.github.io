@@ -1,6 +1,6 @@
 # lukegrecki.github.io
 
-Personal site of Luke Grecki: a moon over water on the front door, and quiet pages for work, music, poems and an about page. Plain HTML, CSS and JavaScript, with no build step to view it. One small script, `tools/build.py`, regenerates the poetry feed, the sitemap and the poems' share images.
+Personal site of Luke Grecki: a sun or moon over water on the front door, and quiet pages for work, music, poems and an about page. Plain HTML, CSS and JavaScript: there's nothing to compile, and the folder works as is. One small script, `tools/build.py`, keeps the generated parts up to date (see [Build tool](#build-tool)).
 
 ## How it works
 
@@ -50,14 +50,41 @@ assets/js/music.js             pixel cover + tracklist player
 assets/js/analytics.js         GoatCounter setup + custom events
 assets/fonts/                  Spectral + Silkscreen (woff2) and their licenses
 assets/og/                     share image for each poem
+assets/og-image.png            share image for every other page
 poems/poems.json               list of poems: order, title, year, date, image time of day
 poems/feed.xml                 Atom feed (generated)
 sitemap.xml, robots.txt        for search engines (sitemap generated)
-tools/build.py                 regenerates feed, sitemap, share images and share tags
+tools/build.py                 updates the generated parts (see Build tool below)
 tools/og-template.html         the page the share images are drawn from
 assets/audio/                  Neon Grotto EP, 192 kbps MP3
 assets/img/portrait.jpg
 ```
+
+## Build tool
+
+`tools/build.py` updates everything that's generated from other files. Run it from the repo folder after adding a poem or changing the styles, then commit what it changed. Running it again when nothing has changed does nothing.
+
+```
+python3 tools/build.py            # the usual run: everything below except redrawing existing images
+python3 tools/build.py --css      # only the stylesheet version (after editing site.css)
+python3 tools/build.py --images   # also redraw every share image (after changing the scene's look)
+```
+
+What it writes:
+
+- **Stylesheet version:** every page's stylesheet link becomes `/assets/css/site.css?v=<hash>`, a short hash of `site.css`, so browsers fetch new styles as soon as they change.
+- **Poem feed:** `poems/feed.xml`, with the full text of each poem in `poems/poems.json`.
+- **Sitemap:** `sitemap.xml`, listing every page and poem.
+- **Share images:** `assets/og/<poem>.png` for each poem, plus `assets/og-image.png` for the other pages. It only draws missing ones unless you pass `--images`.
+- **Share tags:** the `og:image` lines in each poem's page, pointing at its image.
+
+**Requirements:** Python 3, nothing else, unless it has to draw share images. For that, install Playwright once:
+
+```
+pip install playwright && playwright install chromium
+```
+
+**Preview before pushing:** run `python3 -m http.server` in the repo folder and open http://localhost:8000. Add `?time=night`, `?season=winter` or `?tz=Asia/Tokyo` to see other moments (see [How it works](#how-it-works)).
 
 ## Common edits
 
@@ -66,7 +93,7 @@ assets/img/portrait.jpg
   2. Add a numbered row for it in `poems/index.html`.
   3. Update the Previous/Next links at the bottom of its neighbors (`<nav class="poem-nav">`).
   4. Add it to `poems/poems.json`, choosing a time of day for its image (`dawn`, `day`, `dusk` or `night`).
-  5. Run `python3 tools/build.py`. This draws its share image and updates the feed and sitemap. Drawing the image needs Playwright once: `pip install playwright && playwright install chromium`.
+  5. Run `python3 tools/build.py`. This draws its share image and updates the feed and sitemap (see [Build tool](#build-tool)).
 - **Edit the styles:** after changing `assets/css/site.css`, run `python3 tools/build.py --css`. It sets every page's stylesheet link to `/assets/css/site.css?v=<hash>`, a short hash of the file's contents, so visitors' browsers fetch the new styles straight away but keep using their cached copy until it changes again. (A full `python3 tools/build.py` does this too.)
 - **Add a track or release:** copy a `<li class="track">` block in `music/index.html`. Then put the MP3 in `assets/audio/` and set `data-duration` to its length in seconds.
 - **Replace the pixel cover with real art:** swap `<div class="cover" data-cover …>` for an `<img class="cover" src="../assets/img/neon-grotto.jpg" alt="Neon Grotto cover">`.
@@ -80,4 +107,4 @@ assets/img/portrait.jpg
    - For a `www` subdomain, add a `CNAME` record pointing to `lukegrecki.github.io`.
 4. Once the certificate is issued, turn on **Enforce HTTPS**.
 
-Preview locally with `python3 -m http.server` in this folder, then open http://localhost:8000.
+To check changes before pushing, preview locally (see [Build tool](#build-tool)).
