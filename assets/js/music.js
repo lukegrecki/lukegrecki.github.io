@@ -3,33 +3,42 @@
   'use strict';
   var S = window.Sky;
 
-  // ---------- pixel cover: a small moon and its reflection ----------
-  var cover = document.querySelector('[data-cover]');
-  if (S && cover) {
+  // ---------- pixel covers: a small moon and its reflection ----------
+  // data-cover="full" (Neon Grotto) or "crescent" (A History of Small Feelings).
+  function drawCover(cover) {
+    var crescent = cover.getAttribute('data-cover') === 'crescent';
     var orb = S.el('cover__orb'), line = S.el('cover__line'), refl = S.el('cover__refl');
-    S.fill(orb, S.discRows(48, 6).map(function (r) {
-      return S.el('', 'left:' + r.x + 'px;top:' + r.y + 'px;width:' + r.w + 'px;height:6px');
-    }));
-    var r = S.rng(11), dashes = [], yy = 6;
+    var rows = [];
+    S.discRows(48, 6).forEach(function (r) {
+      if (!crescent) { rows.push(S.el('', 'left:' + r.x + 'px;top:' + r.y + 'px;width:' + r.w + 'px;height:6px')); return; }
+      // a waxing crescent: the unlit disc faintly, then the lit sliver on the right
+      var lit = Math.max(-r.hq, Math.round(r.h * Math.cos(2 * Math.PI * 5.5 / S.SYN) / 6) * 6);
+      rows.push(S.el('', 'left:' + r.x + 'px;top:' + r.y + 'px;width:' + r.w + 'px;height:6px;opacity:.14'));
+      if (r.hq - lit > 0) rows.push(S.el('', 'left:' + (48 + lit) + 'px;top:' + r.y + 'px;width:' + (r.hq - lit) + 'px;height:6px'));
+    });
+    S.fill(orb, rows);
+    var rnd = S.rng(crescent ? 23 : 11), dashes = [], yy = 6;
     for (var i = 0; i < 12; i++) {
-      var span = 96 * (0.7 + i * 0.06), x = -span / 2;
-      while (x < span / 2 - 4) {
-        var len = 6 + r() * span * 0.4;
-        if (x + len > span / 2) len = span / 2 - x;
-        if (len >= 4) dashes.push(S.el('', 'left:calc(50% + ' + Math.round(x) + 'px);top:' + Math.round(yy) + 'px;width:' + Math.round(len) + 'px;height:3px;opacity:' + (0.9 - i * 0.05).toFixed(2)));
-        x += len + 3 + r() * 12;
+      // the crescent's reflection is narrower, dimmer and sits under its lit side
+      var span = crescent ? 56 * (0.7 + i * 0.05) : 96 * (0.7 + i * 0.06), off = crescent ? 18 : 0, x = off - span / 2;
+      while (x < off + span / 2 - 4) {
+        var len = crescent ? 4 + rnd() * span * 0.35 : 6 + rnd() * span * 0.4;
+        if (x + len > off + span / 2) len = off + span / 2 - x;
+        if (len >= 4) dashes.push(S.el('', 'left:calc(50% + ' + Math.round(x) + 'px);top:' + Math.round(yy) + 'px;width:' + Math.round(len) + 'px;height:3px;opacity:' + ((crescent ? 0.7 : 0.9) - i * (crescent ? 0.045 : 0.05)).toFixed(2)));
+        x += len + (crescent ? 4 + rnd() * 14 : 3 + rnd() * 12);
       }
       yy += 6 + i * 0.6;
     }
     S.fill(refl, dashes);
     S.fill(cover, [orb, line, refl]);
   }
+  if (S) Array.prototype.forEach.call(document.querySelectorAll('[data-cover]'), drawCover);
 
-  // ---------- player ----------
-  var list = document.querySelector('[data-player]');
-  if (!list) return;
-  var rows = Array.prototype.slice.call(list.querySelectorAll('.track'));
-  var current = null;
+  // ---------- players: one tracklist per release; only one track plays at a time ----------
+  var lists = Array.prototype.slice.call(document.querySelectorAll('[data-player]'));
+  if (!lists.length) return;
+  var current = null;      // the <audio> playing (or last played)
+  var currentRows = [];    // the tracklist it belongs to, for next/previous
   var session = 'mediaSession' in navigator ? navigator.mediaSession : null;
   // Cover shown on the lock screen and in system media controls.
   var ARTWORK = [
@@ -43,13 +52,15 @@
     return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
   }
 
+  lists.forEach(function (list) {
+  var rows = Array.prototype.slice.call(list.querySelectorAll('.track'));
   rows.forEach(function (row, i) {
     var audio = row.querySelector('audio');
     var btn = row.querySelector('.track__btn');
     var bar = row.querySelector('.track__bar');
     var fillEl = row.querySelector('.track__fill');
     var timeEl = row.querySelector('.track__time');
-    var title = row.querySelector('.track__title').textContent.trim();
+    var title = (row.querySelector('.track__name') || row.querySelector('.track__title')).textContent.trim();
     var total = row.getAttribute('data-duration') ? Number(row.getAttribute('data-duration')) : NaN;
     var slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     var playedOnce = false;
@@ -67,6 +78,7 @@
     function play() {
       if (current && current !== audio) current.pause();
       current = audio;
+      currentRows = rows;
       var p = audio.play();
       if (p && p.catch) p.catch(function () {});
     }
@@ -133,14 +145,15 @@
 
     paint();
   });
+  });
 
   // ---------- lock screen, headphones and media keys ----------
   if (session) {
     var indexOfCurrent = function () {
-      for (var k = 0; k < rows.length; k++) if (rows[k].querySelector('audio') === current) return k;
+      for (var k = 0; k < currentRows.length; k++) if (currentRows[k].querySelector('audio') === current) return k;
       return -1;
     };
-    var press = function (k) { var r = rows[k]; if (r) r.querySelector('.track__btn').click(); };
+    var press = function (k) { var r = (currentRows.length ? currentRows : lists[0].querySelectorAll('.track'))[k]; if (r) r.querySelector('.track__btn').click(); };
     var on = function (action, fn) { try { session.setActionHandler(action, fn); } catch (e) { /* not supported here */ } };
     on('play', function () { if (current) current.play(); else press(0); });
     on('pause', function () { if (current) current.pause(); });
@@ -149,7 +162,7 @@
       if (current && (current.currentTime > 3 || k <= 0)) { current.currentTime = 0; if (current.paused) current.play(); }
       else press(k - 1);
     });
-    on('nexttrack', function () { var k = indexOfCurrent(); if (k < rows.length - 1) press(k + 1); });
+    on('nexttrack', function () { var k = indexOfCurrent(); if (k < currentRows.length - 1) press(k + 1); });
     on('seekbackward', function (d) { if (current) current.currentTime = Math.max(0, current.currentTime - ((d && d.seekOffset) || 10)); });
     on('seekforward', function (d) { if (current) current.currentTime = Math.min(current.duration || Infinity, current.currentTime + ((d && d.seekOffset) || 10)); });
     on('seekto', function (d) { if (current && d && isFinite(d.seekTime)) current.currentTime = d.seekTime; });
