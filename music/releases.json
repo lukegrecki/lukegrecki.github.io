@@ -1,0 +1,49 @@
+[
+  {
+    "slug": "the-veil", "title": "The Veil", "type": "Single", "year": 2026, "cover": "gibbous",
+    "artists": ["Luke Grecki", "Flesh", "Stanka"],
+    "links": [],
+    "tracks": [
+      { "title": "The Veil", "file": "the-veil/01-the-veil.mp3", "duration": 268 }
+    ]
+  },
+  {
+    "slug": "neon-grotto", "title": "Neon Grotto", "type": "EP", "year": 2023, "cover": "full",
+    "artists": ["Luke Grecki", "Flesh", "Stanka"],
+    "links": [
+      { "name": "Spotify", "url": "https://open.spotify.com/album/4pbDaV4D7md5Vl4V2zfLAG", "click": "outbound/spotify-album" },
+      { "name": "Apple Music", "url": "https://music.apple.com/us/album/neon-grotto-ep/1723254039", "click": "outbound/apple-music-album" }
+    ],
+    "tracks": [
+      { "title": "Neon Grotto", "file": "01-neon-grotto.mp3", "duration": 348 },
+      { "title": "Mechanical Wanderer", "file": "02-mechanical-wanderer.mp3", "duration": 322 },
+      { "title": "Flow State", "file": "03-flow-state.mp3", "duration": 238 },
+      { "title": "Firefly Hunt", "file": "04-firefly-hunt.mp3", "duration": 244 }
+    ]
+  },
+  {
+    "slug": "a-history-of-small-feelings", "title": "A History of Small Feelings", "type": "EP", "year": 2023, "cover": "crescent",
+    "artists": ["Luke Grecki"],
+    "links": [
+      { "name": "Spotify", "url": "https://open.spotify.com/album/7woq3hbE1hrRw8zM1euPAM", "click": "outbound/spotify-album-small-feelings" },
+      { "name": "Apple Music", "url": "https://music.apple.com/us/album/a-history-of-small-feelings-ep/1680176042", "click": "outbound/apple-music-album-small-feelings" }
+    ],
+    "tracks": [
+      { "title": "A History of Small Feelings", "file": "a-history-of-small-feelings/01-a-history-of-small-feelings.mp3", "duration": 216 },
+      { "title": "This Palace of Shadows", "file": "a-history-of-small-feelings/02-this-palace-of-shadows.mp3", "duration": 177 },
+      { "title": "Light of Night", "file": "a-history-of-small-feelings/03-light-of-night.mp3", "duration": 151, "poem": "light-of-night" },
+      { "title": "The Watcher", "file": "a-history-of-small-feelings/04-the-watcher.mp3", "duration": 100 }
+    ]
+  },
+  {
+    "slug": "stakehouse", "title": "Stakehouse", "type": "Single", "year": 2020, "cover": "half",
+    "artists": ["Luke Grecki", "Flesh", "Stanka"],
+    "links": [
+      { "name": "Spotify", "url": "https://open.spotify.com/album/25cyfhJgZbUTizau5MaZvV", "click": "outbound/spotify-album-stakehouse" },
+      { "name": "Apple Music", "url": "https://music.apple.com/us/album/stakehouse-single/1535335251", "click": "outbound/apple-music-album-stakehouse" }
+    ],
+    "tracks": [
+      { "title": "Stakehouse", "file": "stakehouse/01-stakehouse.mp3", "duration": 320 }
+    ]
+  }
+]

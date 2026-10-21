@@ -5,9 +5,10 @@
 <meta name="robots" content="noindex">
 <title>Share image template</title>
 <!-- Used by tools/build.py to draw each poem's 1200×630 share image.
-     Open /tools/og-template.html?time=dusk&title=Your%20title to preview.
+     Open /tools/og-template.html?time=dusk&title=Your%20title to preview; label= replaces "Poem · Luke Grecki"
+     (release pages use label=EP%20·%20Luke%20Grecki).
      With home=1 it draws the site-wide image instead: the scene centred, with no text. -->
-<link rel="stylesheet" href="/assets/css/site.css?v=3fd54b8c">
+<link rel="stylesheet" href="/assets/css/site.css?v=48ae3138">
 <style>
 html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
 *, *::before, *::after { animation: none !important; }
@@ -39,7 +40,9 @@ html.home .og-label, html.home .og-title { display: none; }
   <h1 class="og-title"></h1>
 </div>
 <script>
-  document.querySelector('.og-title').textContent = new URLSearchParams(location.search).get('title') || '';
+  var params = new URLSearchParams(location.search);
+  document.querySelector('.og-title').textContent = params.get('title') || '';
+  if (params.get('label')) document.querySelector('.og-label').textContent = params.get('label');
   // keep the water beside the title clear of glints (not needed for the textless home image)
   window.addEventListener('load', function () {
     if (!document.documentElement.classList.contains('home')) document.querySelectorAll('.scene__refl > div').forEach(function (d) {

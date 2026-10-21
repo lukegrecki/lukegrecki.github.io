@@ -4,8 +4,8 @@
   var S = window.Sky;
 
   // ---------- pixel covers: a small moon and its reflection ----------
-  // data-cover="full" (Neon Grotto), "crescent" (A History of Small Feelings) or "half" (Stakehouse).
-  var PHASE_AGE = { crescent: 5.5, half: 7.4 };   // days into the lunar month
+  // data-cover="full" (Neon Grotto), "gibbous" (The Veil), "crescent" (A History of Small Feelings) or "half" (Stakehouse).
+  var PHASE_AGE = { crescent: 5.5, half: 7.4, gibbous: 11 };   // days into the lunar month
   function drawCover(cover) {
     var age = PHASE_AGE[cover.getAttribute('data-cover')];
     var crescent = age !== undefined;   // any partly lit moon
@@ -46,8 +46,8 @@
   var session = 'mediaSession' in navigator ? navigator.mediaSession : null;
   // Cover shown on the lock screen and in system media controls.
   var ARTWORK = [
-    { src: new URL('../assets/icon-512.png', location.href).href, sizes: '512x512', type: 'image/png' },
-    { src: new URL('../assets/icon-192.png', location.href).href, sizes: '192x192', type: 'image/png' }
+    { src: new URL('/assets/icon-512.png', location.href).href, sizes: '512x512', type: 'image/png' },
+    { src: new URL('/assets/icon-192.png', location.href).href, sizes: '192x192', type: 'image/png' }
   ];
 
   function fmt(sec) {

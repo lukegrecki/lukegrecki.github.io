@@ -219,6 +219,8 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 .release__artists { font-size: 19px; line-height: 1.4; }
 .release__links { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 19px; }
 .release--earlier { margin-top: clamp(80px, 10vw, 128px); }
+.release--page { margin-top: clamp(32px, 5vw, 56px); }
+.release--page .release__title { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.15; letter-spacing: -0.01em; }
 
 .tracklist { list-style: none; margin: 48px 0 0; padding: 0; position: relative; }
 .tracklist::before, .track::after { content: ""; position: absolute; left: 0; right: 0; height: 2px; background: var(--dots); }
