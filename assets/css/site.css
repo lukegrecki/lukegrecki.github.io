@@ -197,6 +197,10 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 .elsewhere { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 16px 48px; align-items: baseline; }
 .elsewhere h2 { flex: 0 0 160px; margin: 0; font-size: 12px; letter-spacing: 0.16em; color: var(--muted); }
 .elsewhere ul { flex: 1 1 400px; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 36px; }
+.elsewhere p { flex: 1 1 400px; margin: 0; max-width: 52ch; line-height: 1.6; }
+/* links inside running text sit on the line instead of taking the taller tap-target box */
+.elsewhere p .textlink { display: inline; padding: 0; }
+.rule-gap { margin-top: 32px; }
 .section-gap { margin-top: clamp(56px, 8vw, 88px); }
 
 /* ---------- music ---------- */
