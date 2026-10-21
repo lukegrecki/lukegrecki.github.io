@@ -216,6 +216,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 .release__kicker { font-size: 12px; letter-spacing: 0.16em; color: var(--muted); }
 .release__title { font-weight: 300; font-size: clamp(28px, 3vw, 36px); line-height: 1.1; }
 .release__meta { font-size: 18px; line-height: 1.5; color: var(--muted); }
+.release__artists { font-size: 19px; line-height: 1.4; }
 .release__links { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 19px; }
 .release--earlier { margin-top: clamp(80px, 10vw, 128px); }
 

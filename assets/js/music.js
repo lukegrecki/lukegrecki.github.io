@@ -4,23 +4,27 @@
   var S = window.Sky;
 
   // ---------- pixel covers: a small moon and its reflection ----------
-  // data-cover="full" (Neon Grotto) or "crescent" (A History of Small Feelings).
+  // data-cover="full" (Neon Grotto), "crescent" (A History of Small Feelings) or "half" (Stakehouse).
+  var PHASE_AGE = { crescent: 5.5, half: 7.4 };   // days into the lunar month
   function drawCover(cover) {
-    var crescent = cover.getAttribute('data-cover') === 'crescent';
+    var age = PHASE_AGE[cover.getAttribute('data-cover')];
+    var crescent = age !== undefined;   // any partly lit moon
     var orb = S.el('cover__orb'), line = S.el('cover__line'), refl = S.el('cover__refl');
     var rows = [];
     S.discRows(48, 6).forEach(function (r) {
       if (!crescent) { rows.push(S.el('', 'left:' + r.x + 'px;top:' + r.y + 'px;width:' + r.w + 'px;height:6px')); return; }
       // a waxing crescent: the unlit disc faintly, then the lit sliver on the right
-      var lit = Math.max(-r.hq, Math.round(r.h * Math.cos(2 * Math.PI * 5.5 / S.SYN) / 6) * 6);
+      var lit = Math.max(-r.hq, Math.round(r.h * Math.cos(2 * Math.PI * age / S.SYN) / 6) * 6);
       rows.push(S.el('', 'left:' + r.x + 'px;top:' + r.y + 'px;width:' + r.w + 'px;height:6px;opacity:.14'));
       if (r.hq - lit > 0) rows.push(S.el('', 'left:' + (48 + lit) + 'px;top:' + r.y + 'px;width:' + (r.hq - lit) + 'px;height:6px'));
     });
     S.fill(orb, rows);
-    var rnd = S.rng(crescent ? 23 : 11), dashes = [], yy = 6;
+    // how much of the disc is lit, and where its middle sits, shape the reflection
+    var litFrac = crescent ? (1 - Math.cos(2 * Math.PI * age / S.SYN)) / 2 : 1;
+    var rnd = S.rng(crescent ? 23 + Math.round(age) : 11), dashes = [], yy = 6;
     for (var i = 0; i < 12; i++) {
       // the crescent's reflection is narrower, dimmer and sits under its lit side
-      var span = crescent ? 56 * (0.7 + i * 0.05) : 96 * (0.7 + i * 0.06), off = crescent ? 18 : 0, x = off - span / 2;
+      var span = crescent ? (36 + 50 * litFrac) * (0.7 + i * 0.05) : 96 * (0.7 + i * 0.06), off = crescent ? Math.round(48 * (1 - litFrac) * 0.8) : 0, x = off - span / 2;
       while (x < off + span / 2 - 4) {
         var len = crescent ? 4 + rnd() * span * 0.35 : 6 + rnd() * span * 0.4;
         if (x + len > off + span / 2) len = off + span / 2 - x;
@@ -96,7 +100,7 @@
       btn.setAttribute('aria-label', 'Pause ' + title);
       if (!playedOnce) { playedOnce = true; track('play', 'Played'); }
       if (session && window.MediaMetadata) {
-        session.metadata = new MediaMetadata({ title: title, artist: 'Luke Grecki', album: list.getAttribute('data-album') || '', artwork: ARTWORK });
+        session.metadata = new MediaMetadata({ title: title, artist: list.getAttribute('data-artist') || 'Luke Grecki', album: list.getAttribute('data-album') || '', artwork: ARTWORK });
         session.playbackState = 'playing';
       }
       paint();

@@ -56,7 +56,7 @@ poems/feed.xml                 Atom feed (generated)
 sitemap.xml, robots.txt        for search engines (sitemap generated)
 tools/build.py                 updates the generated parts (see Build tool below)
 tools/og-template.html         the page the share images are drawn from
-assets/audio/                  the EPs, 192 kbps MP3 (Neon Grotto at the top level, A History of Small Feelings in its own folder)
+assets/audio/                  the EPs, 192 kbps MP3 (Neon Grotto at the top level, later additions each in their own folder)
 assets/img/portrait.jpg
 ```
 
@@ -95,8 +95,8 @@ pip install playwright && playwright install chromium
   4. Add it to `poems/poems.json`, choosing a time of day for its image (`dawn`, `day`, `dusk` or `night`).
   5. Run `python3 tools/build.py`. This draws its share image and updates the feed and sitemap (see [Build tool](#build-tool)).
 - **Edit the styles:** after changing `assets/css/site.css`, run `python3 tools/build.py --css`. It sets every page's stylesheet link to `/assets/css/site.css?v=<hash>`, a short hash of the file's contents, so visitors' browsers fetch the new styles straight away but keep using their cached copy until it changes again. (A full `python3 tools/build.py` does this too.)
-- **Add a track or release:** each release in `music/index.html` is a `<section class="release">` followed by its own `<ol class="tracklist" data-player data-album="…">`, and the player handles any number of them (only one track plays at a time; next and previous stay within an album). For a new release, copy one of those pairs and put its MP3s in their own folder under `assets/audio/` (as `assets/audio/a-history-of-small-feelings/` does). For each track, set `data-duration` to its length in seconds. Encode at 192 kbps: `ffmpeg -i song.wav -b:a 192k 01-song.mp3`.
-- **Pixel covers:** `data-cover="full"` draws a full moon and `data-cover="crescent"` a crescent (see `assets/js/music.js`).
+- **Add a track or release:** each release in `music/index.html` is a `<section class="release">` followed by its own `<ol class="tracklist" data-player data-album="…">`, and the player handles any number of them (only one track plays at a time; next and previous stay within an album). For a new release, copy one of those pairs and put its MP3s in their own folder under `assets/audio/` (as `assets/audio/a-history-of-small-feelings/` does). For a release with other artists, add a `<p class="release__artists">` line under its title and the same names in `data-artist` on its tracklist (that's what lock screens show). For each track, set `data-duration` to its length in whole seconds (rounded down, as streaming services show it) and keep `preload="none"` on its `<audio>`, so nothing downloads until someone presses play; the page shows the length from `data-duration`. Encode at 192 kbps: `ffmpeg -i song.wav -b:a 192k 01-song.mp3`.
+- **Pixel covers:** `data-cover="full"` draws a full moon, `"crescent"` a crescent and `"half"` a half moon; add more phases in `PHASE_AGE` in `assets/js/music.js`.
 - **Replace the pixel cover with real art:** swap `<div class="cover" data-cover …>` for an `<img class="cover" src="../assets/img/neon-grotto.jpg" alt="Neon Grotto cover">`.
 
 ## Publishing (GitHub Pages)
