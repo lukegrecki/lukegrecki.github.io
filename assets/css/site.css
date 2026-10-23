@@ -116,6 +116,12 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px d
 /* the surname in the pixel face, in the header and on the home page. Silkscreen draws on 8 pixels per em,
    so keep the font size a multiple of 8 (24px here: 3px pixels) for crisp edges */
 .name-pixel { font-family: 'Silkscreen', ui-monospace, monospace; font-weight: 400; letter-spacing: 0; }
+/* in a page title, sized in steps (multiples of 8) to sit with the serif's capitals as the title grows */
+.title .name-pixel { font-size: 32px; }
+/* inline-block: the pixel words move to the next line together, and only break if they can't fit on one */
+.title .name-pixel { display: inline-block; }
+@media (min-width: 1000px) { .title .name-pixel { font-size: 40px; } }
+@media (min-width: 1220px) { .title .name-pixel { font-size: 48px; } }
 .site-nav { list-style: none; margin: 0; padding: 0 0 0 14px; display: flex; flex-wrap: wrap; gap: 0 28px; font-size: 12px; color: var(--muted); }
 .site-nav a[aria-current="page"] { color: var(--ink); }
 
