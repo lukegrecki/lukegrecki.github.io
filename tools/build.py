@@ -245,7 +245,7 @@ def release_page(releases, k, head_from):
 <a class="skip" href="#content">Skip to content</a>
 <header>
   <div class="wrap site-header__bar">
-    <a class="rowlink site-name" href="../../"><span class="rowtitle">Luke Grecki</span></a>
+    <a class="rowlink site-name" href="../../"><span class="rowtitle">Luke <span class="name-pixel">Grecki</span></span></a>
     <nav aria-label="Main">
       <ul class="site-nav pixel">
         <li><a class="navlink" href="../../work/">Work</a></li>
