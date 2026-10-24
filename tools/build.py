@@ -346,7 +346,8 @@ def build_images(poems, releases, redraw):
         for p in todo:
             page = browser.new_page(viewport={'width': 1200, 'height': 630})
             page.clock.set_fixed_time(FULL_MOON)
-            query = urllib.parse.urlencode({'time': p.get('time', 'night'), 'season': 'autumn', 'title': p['title']})
+            query = urllib.parse.urlencode({'time': p.get('time', 'night'), 'season': 'autumn', 'title': p['title'],
+                                            'label': f"Poem · {p['year']}"})
             page.goto(f'{base}/tools/og-template.html?{query}', wait_until='networkidle')
             page.wait_for_selector('html[data-ready]')
             page.evaluate('document.fonts.ready')
@@ -360,7 +361,7 @@ def build_images(poems, releases, redraw):
             page = browser.new_page(viewport={'width': 1200, 'height': 630})
             page.clock.set_fixed_time(when)
             query = urllib.parse.urlencode({'time': 'night', 'season': 'autumn', 'title': r['title'],
-                                            'label': f"{r['type']} · Luke Grecki"})
+                                            'label': f"{r['type']} · {r['year']}"})
             page.goto(f'{base}/tools/og-template.html?{query}', wait_until='networkidle')
             page.wait_for_selector('html[data-ready]')
             page.evaluate('document.fonts.ready')

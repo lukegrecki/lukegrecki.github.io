@@ -87,8 +87,8 @@
         cxSum += (qa + qb) / 2; cxN++;
       }
     });
-    if (isMoon) {
-      // craters, only where the moon is lit (and turned over in the south)
+    if (isMoon && !root.hasAttribute('data-no-craters')) {
+      // craters, only where the moon is lit (and turned over in the south); share images leave them off
       CRATERS.forEach(function (c) {
         var x0 = S.south ? D - c[0] - c[2] : c[0], y0 = S.south ? D - c[1] - c[3] : c[1];
         for (var yy = y0; yy < y0 + c[3]; yy += G) {
