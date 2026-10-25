@@ -105,7 +105,7 @@ pip install playwright && playwright install chromium
   - `tracks`: `title`, `file` (relative to `assets/audio/`), `duration` in whole seconds (rounded down, as streaming services show it) and, optionally, `poem` (a poem's slug) to add a "Read the poem" link.
   
   Put the MP3s in their own folder under `assets/audio/` (as `assets/audio/a-history-of-small-feelings/` does), encoded at 192 kbps: `ffmpeg -i song.wav -b:a 192k 01-song.mp3`. Tracks never download until someone presses play, and the player handles any number of releases (only one track plays at a time; next and previous stay within a release).
-- **Pixel covers:** `data-cover="full"` draws a full moon, `"crescent"` a crescent, `"half"` a half moon and `"gibbous"` a gibbous moon; add more phases in `PHASE_AGE` in `assets/js/music.js`.
+- **Pixel covers:** `data-cover="full"` draws a full moon, `"crescent"` a crescent, `"half"` a half moon, `"gibbous"` a gibbous moon and `"waning"` a waning crescent (lit on the left); add more phases in `PHASE_AGE` in `assets/js/music.js`.
 - **Replace a pixel cover with real art:** change `cover()` in `tools/build.py` to return an `<img class="cover" src="…" alt="… cover">` for that release.
 
 ## Publishing (GitHub Pages)

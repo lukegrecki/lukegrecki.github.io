@@ -110,10 +110,10 @@ def build_sitemap(poems, releases):
 
 # ---------- music: the Music page listing and one page per release, from music/releases.json ----------
 
-PHASE_WORDS = {'full': 'moon', 'crescent': 'crescent moon', 'half': 'half moon', 'gibbous': 'gibbous moon'}
+PHASE_WORDS = {'full': 'moon', 'crescent': 'crescent moon', 'half': 'half moon', 'gibbous': 'gibbous moon', 'waning': 'waning crescent moon'}
 # days into the lunar month for each cover (matches PHASE_AGE in assets/js/music.js)
-MOON_ALT = {'full': 'a full moon', 'crescent': 'a crescent moon', 'half': 'a half moon', 'gibbous': 'a gibbous moon'}
-PHASE_AGE = {'full': None, 'crescent': 5.5, 'half': 7.4, 'gibbous': 11}
+MOON_ALT = {'full': 'a full moon', 'crescent': 'a crescent moon', 'half': 'a half moon', 'gibbous': 'a gibbous moon', 'waning': 'a waning crescent moon'}
+PHASE_AGE = {'full': None, 'crescent': 5.5, 'half': 7.4, 'gibbous': 11, 'waning': 24}
 LUNAR_HALF = 14.782316  # days from new moon to FULL_MOON
 ICON_PLAY = ('<svg class="icon-play" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">'
              '<path d="M4 2h2v12H4zM6 3h2v10H6zM8 5h2v6H8zM10 7h2v2h-2z" fill="currentColor"/></svg>')

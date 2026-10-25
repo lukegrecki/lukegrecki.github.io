@@ -36,6 +36,17 @@
     ]
   },
   {
+    "slug": "there-is-no-tomorrow", "title": "There Is No Tomorrow", "type": "Single", "year": 2021, "cover": "waning",
+    "artists": ["Luke Grecki", "Molly Rubenstein"],
+    "links": [
+      { "name": "Spotify", "url": "https://open.spotify.com/album/15nMHGmxxVYwTR3nX9NOIl", "click": "outbound/spotify-album-there-is-no-tomorrow" },
+      { "name": "Apple Music", "url": "https://music.apple.com/us/album/there-is-no-tomorrow-single/1599773310", "click": "outbound/apple-music-album-there-is-no-tomorrow" }
+    ],
+    "tracks": [
+      { "title": "There Is No Tomorrow", "file": "there-is-no-tomorrow/01-there-is-no-tomorrow.mp3", "duration": 236 }
+    ]
+  },
+  {
     "slug": "stakehouse", "title": "Stakehouse", "type": "Single", "year": 2020, "cover": "half",
     "artists": ["Luke Grecki", "Flesh", "Stanka"],
     "links": [

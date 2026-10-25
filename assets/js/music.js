@@ -4,8 +4,9 @@
   var S = window.Sky;
 
   // ---------- pixel covers: a small moon and its reflection ----------
-  // data-cover="full" (Neon Grotto), "gibbous" (The Veil), "crescent" (A History of Small Feelings) or "half" (Stakehouse).
-  var PHASE_AGE = { crescent: 5.5, half: 7.4, gibbous: 11 };   // days into the lunar month
+  // data-cover="full" (Neon Grotto), "gibbous" (The Veil), "crescent" (A History of Small Feelings), "half" (Stakehouse)
+  // or "waning" (There Is No Tomorrow). Waxing moons are lit on the right, waning ones on the left.
+  var PHASE_AGE = { crescent: 5.5, half: 7.4, gibbous: 11, waning: 24 };   // days into the lunar month
   function drawCover(cover) {
     var age = PHASE_AGE[cover.getAttribute('data-cover')];
     var crescent = age !== undefined;   // any partly lit moon
@@ -13,10 +14,12 @@
     var rows = [];
     S.discRows(48, 6).forEach(function (r) {
       if (!crescent) { rows.push(S.el('', 'left:' + r.x + 'px;top:' + r.y + 'px;width:' + r.w + 'px;height:6px')); return; }
-      // a waxing crescent: the unlit disc faintly, then the lit sliver on the right
-      var lit = Math.max(-r.hq, Math.round(r.h * Math.cos(2 * Math.PI * age / S.SYN) / 6) * 6);
+      // the unlit disc faintly, then the lit part: from the terminator to the right limb while waxing,
+      // from the left limb to the terminator while waning
+      var ph = 2 * Math.PI * age / S.SYN, t = Math.round(r.h * Math.cos(ph) / 6) * 6;
+      var a = ph <= Math.PI ? Math.max(-r.hq, t) : -r.hq, b = ph <= Math.PI ? r.hq : Math.min(r.hq, -t);
       rows.push(S.el('', 'left:' + r.x + 'px;top:' + r.y + 'px;width:' + r.w + 'px;height:6px;opacity:.14'));
-      if (r.hq - lit > 0) rows.push(S.el('', 'left:' + (48 + lit) + 'px;top:' + r.y + 'px;width:' + (r.hq - lit) + 'px;height:6px'));
+      if (b - a > 0) rows.push(S.el('', 'left:' + (48 + a) + 'px;top:' + r.y + 'px;width:' + (b - a) + 'px;height:6px'));
     });
     S.fill(orb, rows);
     // how much of the disc is lit, and where its middle sits, shape the reflection
@@ -24,7 +27,7 @@
     var rnd = S.rng(crescent ? 23 + Math.round(age) : 11), dashes = [], yy = 6;
     for (var i = 0; i < 12; i++) {
       // the crescent's reflection is narrower, dimmer and sits under its lit side
-      var span = crescent ? (36 + 50 * litFrac) * (0.7 + i * 0.05) : 96 * (0.7 + i * 0.06), off = crescent ? Math.round(48 * (1 - litFrac) * 0.8) : 0, x = off - span / 2;
+      var span = crescent ? (36 + 50 * litFrac) * (0.7 + i * 0.05) : 96 * (0.7 + i * 0.06), off = crescent ? Math.round(48 * (1 - litFrac) * 0.8) * (age > S.SYN / 2 ? -1 : 1) : 0, x = off - span / 2;
       while (x < off + span / 2 - 4) {
         var len = crescent ? 4 + rnd() * span * 0.35 : 6 + rnd() * span * 0.4;
         if (x + len > off + span / 2) len = off + span / 2 - x;
